@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raven - News Organised</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <span class="logo-icon">🐦</span>
+                <span class="logo-text">Raven</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#news" class="nav-link">News</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">News is scattered.</h1>
+            <h2 class="hero-subtitle">We organise it.</h2>
+            <p class="hero-description">
+                Raven brings together local news and public information in one clean, easy-to-navigate platform. 
+                Stay informed about what matters in your community.
+            </p>
+            <button class="btn btn-primary" onclick="document.getElementById('news').scrollIntoView({behavior: 'smooth'})">
+                Explore News
+            </button>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="Search news stories..."
+                onkeyup="filterNews()"
+            >
+            <button class="btn btn-search" onclick="performSearch()">Search</button>
+        </div>
+    </section>
+
+    <!-- Categories Filter -->
+    <section class="categories-section">
+        <div class="categories-container">
+            <h3>Filter by Category</h3>
+            <div class="categories-list">
+                <button class="category-btn active" onclick="filterByCategory('all')">All</button>
+                <button class="category-btn" onclick="filterByCategory('Water')">Water</button>
+                <button class="category-btn" onclick="filterByCategory('Infrastructure')">Infrastructure</button>
+                <button class="category-btn" onclick="filterByCategory('Government')">Government</button>
+                <button class="category-btn" onclick="filterByCategory('Business')">Business</button>
+                <button class="category-btn" onclick="filterByCategory('Development')">Development</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News Section -->
+    <section id="news" class="latest-news">
+        <div class="section-container">
+            <h2 class="section-title">Latest News</h2>
+            <div id="newsContainer" class="news-grid">
+                <!-- News cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="section-container">
+            <h2 class="section-title">About Raven</h2>
+            <div class="about-content">
+                <p>
+                    Raven is a modern news platform designed to help you stay informed about local news, public information, 
+                    and community developments. We believe that important information should be accessible, organized, and easy to find.
+                </p>
+                <p>
+                    Our mission is to bring clarity to the scattered world of news by curating and organizing stories that matter to you. 
+                    Whether it's updates on water services, infrastructure projects, government initiatives, business developments, or community growth—
+                    Raven keeps you informed.
+                </p>
+                <div class="about-features">
+                    <div class="feature">
+                        <span class="feature-icon">📱</span>
+                        <h3>Mobile-First</h3>
+                        <p>Optimized for your phone, tablet, and desktop</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔍</span>
+                        <h3>Easy Search</h3>
+                        <p>Find news quickly with our search and filters</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">📰</span>
+                        <h3>Organized</h3>
+                        <p>Stories categorized for better navigation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="section-container">
+            <h2 class="section-title">Get in Touch</h2>
+            <p>Have feedback or a story to share? We'd love to hear from you.</p>
+            <p class="contact-email">Email: <a href="mailto:hello@ravenews.com">hello@ravenews.com</a></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Raven News. All rights reserved.</p>
+            <p>News is scattered. We organise it.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
