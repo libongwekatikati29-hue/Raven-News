@@ -1,121 +1,72 @@
-// Raven News - Sample News Data
-const newsData = [
-    {
-        title: "Water Infrastructure Update",
-        category: "Water",
-        date: "6 September 2026",
-        summary: "An update on local water infrastructure and ongoing developments.",
-        source: "Raven Research"
-    },
-    {
-        title: "Infrastructure Development Project",
-        category: "Infrastructure",
-        date: "5 September 2026",
-        summary: "A local infrastructure project enters its next stage of development.",
-        source: "Raven Research"
-    },
-    {
-        title: "Municipal Government Update",
-        category: "Government",
-        date: "4 September 2026",
-        summary: "A new municipal update provides information about ongoing public services.",
-        source: "Raven Research"
-    },
-    {
-        title: "Local Business Development",
-        category: "Business",
-        date: "3 September 2026",
-        summary: "New developments could have an impact on businesses and the local economy.",
-        source: "Raven Research"
-    },
-    {
-        title: "New Development Announcement",
-        category: "Development",
-        date: "2 September 2026",
-        summary: "A newly announced development project could shape the future of the area.",
-        source: "Raven Research"
+// Raven News - Supabase Connection
+
+const SUPABASE_URL = "https://rwmaknwrwtdkozubckyw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_9dwLnuEma-v3o19kREj9gg_CfgyFaXe";
+
+async function loadNews() {
+    try {
+        const response = await fetch(
+            `${SUPABASE_URL}/rest/v1/events?select=*&order=event_date.desc`,
+            {
+                headers: {
+                    apikey: SUPABASE_KEY,
+                    Authorization: `Bearer ${SUPABASE_KEY}`
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Supabase error: ${response.status}`);
+        }
+
+        const news = await response.json();
+
+        displayNews(news);
+
+    } catch (error) {
+        console.error("Raven could not load events:", error);
+
+        const container = document.getElementById("news-container");
+
+        if (container) {
+            container.innerHTML = `
+                <p>Raven couldn't load the latest information.</p>
+            `;
+        }
     }
-];
+}
 
-
-// Display News
 function displayNews(news) {
-    const container = document.getElementById("newsContainer");
+    const container = document.getElementById("news-container");
 
-    if (!container) return;
-
-    container.innerHTML = "";
+    if (!container) {
+        console.error("Raven couldn't find the news container.");
+        return;
+    }
 
     if (news.length === 0) {
-        container.innerHTML = `
-            <div class="no-results">
-                <h3>No stories found</h3>
-                <p>Try another search or category.</p>
-            </div>
-        `;
+        container.innerHTML = "<p>No events found.</p>";
         return;
     }
 
-    news.forEach(item => {
-        const card = document.createElement("article");
+    container.innerHTML = news.map(event => `
+        <article class="news-card">
+            <h3>${event.title || "Untitled event"}</h3>
 
-        card.className = "news-card";
+            <p>
+                ${event.description || "No description available."}
+            </p>
 
-        card.innerHTML = `
-            <div class="news-category">${item.category}</div>
-            <h3>${item.title}</h3>
-            <p>${item.summary}</p>
             <div class="news-meta">
-                <span>${item.date}</span>
-                <span>${item.source}</span>
+                <span>${event.category || ""}</span>
+                <span>${event.location || ""}</span>
             </div>
-        `;
 
-        container.appendChild(card);
-    });
+            <small>
+                Source: ${event.source_name || "Unknown"}
+            </small>
+        </article>
+    `).join("");
 }
 
-
-// Search News
-function performSearch() {
-    const searchInput = document.getElementById("searchInput");
-
-    if (!searchInput) return;
-
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    const filteredNews = newsData.filter(item =>
-        item.title.toLowerCase().includes(searchTerm) ||
-        item.category.toLowerCase().includes(searchTerm) ||
-        item.summary.toLowerCase().includes(searchTerm)
-    );
-
-    displayNews(filteredNews);
-}
-
-
-// Filter by Category
-function filterByCategory(category) {
-    if (category === "All") {
-        displayNews(newsData);
-        return;
-    }
-
-    const filteredNews = newsData.filter(
-        item => item.category === category
-    );
-
-    displayNews(filteredNews);
-}
-
-
-// Filter News
-function filterNews(category) {
-    filterByCategory(category);
-}
-
-
-// Load News When Page Opens
-document.addEventListener("DOMContentLoaded", () => {
-    displayNews(newsData);
-});
+document.addEventListener("DOMContentLoaded", loadNews);
